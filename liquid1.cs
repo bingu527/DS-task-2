@@ -43,12 +43,10 @@ public class liquid1 : MonoBehaviour
     {
         GetMeshAndRend();
     }
-
     private void OnValidate()
     {
         GetMeshAndRend();
     }
-
     void GetMeshAndRend()
     {
         if (mesh == null)
@@ -68,36 +66,26 @@ public class liquid1 : MonoBehaviour
             case UpdateMode.Normal:
                 deltaTime = Time.deltaTime;
                 break;
-
             case UpdateMode.UnscaledTime:
                 deltaTime = Time.unscaledDeltaTime;
                 break;
         }
-
         time += deltaTime;
-
         if (deltaTime != 0)
         {
-
-
             // decrease wobble over time
             wobbleAmountToAddX = Mathf.Lerp(wobbleAmountToAddX, 0, (deltaTime * Recovery));
             wobbleAmountToAddZ = Mathf.Lerp(wobbleAmountToAddZ, 0, (deltaTime * Recovery));
-
-
-
+            
             // make a sine wave of the decreasing wobble (not working, will fix in the final build phase)
             pulse = 2 * Mathf.PI * WobbleSpeedMove;
             sinewave = Mathf.Lerp(sinewave, Mathf.Sin(pulse * time), deltaTime * Mathf.Clamp(velocity.magnitude + angularVelocity.magnitude, Thickness, 10));
 
             wobbleAmountX = wobbleAmountToAddX * sinewave;
             wobbleAmountZ = wobbleAmountToAddZ * sinewave;
-
-
-
+            
             // velocity
             velocity = (lastPos - transform.position) / deltaTime;
-
             angularVelocity = GetAngularVelocity(lastRot, transform.rotation);
 
             // add clamped velocity to wobble (also not working)
@@ -116,10 +104,9 @@ public class liquid1 : MonoBehaviour
         lastPos = transform.position;
         lastRot = transform.rotation;
     }
-
+    
     void UpdatePos(float deltaTime)
     {
-
         Vector3 worldPos = transform.TransformPoint(new Vector3(mesh.bounds.center.x, mesh.bounds.center.y, mesh.bounds.center.z));
         if (CompensateShapeAmount > 0)
         {
@@ -140,7 +127,7 @@ public class liquid1 : MonoBehaviour
         }
         rend.sharedMaterial.SetVector("_FillAmount", pos);
     }
-
+    
     Vector3 GetAngularVelocity(Quaternion foreLastFrameRotation, Quaternion lastFrameRotation)
     {
         var q = lastFrameRotation * Quaternion.Inverse(foreLastFrameRotation);
@@ -175,9 +162,7 @@ public class liquid1 : MonoBehaviour
 
         for (int i = 0; i < vertices.Length; i++)
         {
-
             Vector3 position = transform.TransformPoint(vertices[i]);
-
             if (position.y < lowestY)
             {
                 lowestY = position.y;
